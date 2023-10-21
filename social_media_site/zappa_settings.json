@@ -1,0 +1,10 @@
+{
+    "dev": {
+        "aws_region": "ap-south-1",
+        "django_settings": "social_media_site.settings",
+        "profile_name": "default",
+        "project_name": "coding_club",
+        "runtime": "python3.7",
+        "s3_bucket": "zappa-nyrud4aft"
+    }
+}
