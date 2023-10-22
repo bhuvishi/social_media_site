@@ -16,16 +16,21 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#STATIC_DIR = os.path.join(BASE_DIR, "static")
+#STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
 S3_BUCKET_NAME = "socialmediasite"
 STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
-AWS_ACCESS_KEY_ID =  os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-print('Using access keys: ', AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#AWS_ACCESS_KEY_ID =  os.environ.get('AWS_ACCESS_KEY_ID')
+#AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+#print('Using access keys: ', AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 AWS_S3_BUCKET_NAME_STATIC = S3_BUCKET_NAME
 # to serve the static files from your s3 bucket
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % S3_BUCKET_NAME
-
+STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+STATIC_ROOT = STATIC_URL
+AWS_DEFAULT_ACL = None
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -36,7 +41,7 @@ SECRET_KEY = 'django-insecure-i+0i1dr^1m&!x$zmqz$cfmaph!$9@j8=lp)59i&g%lsk!bp8e#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ptka2ktir3.execute-api.ap-south-1.amazonaws.com']
 
 
 # Application definition
@@ -52,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'zappa_django_utils',
 ]
 
 MIDDLEWARE = [
@@ -88,10 +94,21 @@ WSGI_APPLICATION = 'social_media_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'websitedb',
+        'USER': 'websitedbmaster',
+        'PASSWORD': '5493abaf-2284-4293-80d1-7ea1a06092a1',
+        'HOST': 'websitedb.cjt32wmjltiu.ap-south-1.rds.amazonaws.com',
+        'PORT': 5432,
     }
 }
 
@@ -130,7 +147,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 # STATIC_URL = 'static/'
 
 # Default primary key field type
@@ -145,3 +161,8 @@ LOGIN_URL = 'login'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+STATICFILES_DIRS = [
+    STATIC_DIR,
+    MEDIA_ROOT,
+]
