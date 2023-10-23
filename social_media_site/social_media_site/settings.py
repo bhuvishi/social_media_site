@@ -22,9 +22,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 S3_BUCKET_NAME = "socialmediasite"
 STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
-#AWS_ACCESS_KEY_ID =  os.environ.get('AWS_ACCESS_KEY_ID')
-#AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-#print('Using access keys: ', AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 AWS_S3_BUCKET_NAME_STATIC = S3_BUCKET_NAME
 # to serve the static files from your s3 bucket
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % S3_BUCKET_NAME
@@ -161,8 +158,3 @@ LOGIN_URL = 'login'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
-STATICFILES_DIRS = [
-    STATIC_DIR,
-    MEDIA_ROOT,
-]
